@@ -12,13 +12,7 @@ public class ModelMapperConfig {
 
     @Bean
     public ModelMapper mapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setPropertyCondition(Conditions.isNotNull())
-                .setSourceNamingConvention(NamingConventions.NONE)
-                .setDestinationNamingConvention(NamingConventions.NONE)
-                .setMatchingStrategy(MatchingStrategies.STRICT);        ;
-        return modelMapper;
+        return new ModelMapper();
     }
 
 }
