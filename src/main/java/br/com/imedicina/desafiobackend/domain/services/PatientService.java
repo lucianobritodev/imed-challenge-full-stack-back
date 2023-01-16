@@ -6,6 +6,8 @@ import br.com.imedicina.desafiobackend.domain.domainexceptions.ResourceNotFoundE
 import br.com.imedicina.desafiobackend.domain.dtos.PatientDto;
 import br.com.imedicina.desafiobackend.domain.entities.Patient;
 import br.com.imedicina.desafiobackend.domain.repositories.PatientRepository;
+import br.com.imedicina.desafiobackend.domain.services.models.IConverterService;
+import br.com.imedicina.desafiobackend.domain.services.models.ICrudService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -13,84 +15,90 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service
+@Service("patientService")
 @AllArgsConstructor
 @Slf4j
-public class PatientService extends BaseService<PatientDto, Patient> {
+public class PatientService implements ICrudService<PatientDto>, IConverterService<PatientDto, Patient> {
 
     private PatientRepository patientRepository;
     private ModelMapper mapper;
 
     @Transactional(readOnly = true)
-    public List<Patient> findAll() {
-        return patientRepository.findAll();
+    public List<PatientDto> findAll() {
+
+        return patientRepository.findAll()
+                .stream()
+                .map(x -> this.copyEntityToDto(x, PatientDto.class))
+                .collect(Collectors.toList());
+
     }
 
     @Transactional(readOnly = true)
-    public Patient findById(Long id) {
+    public PatientDto findById(Long id) {
+
         if(id == null)
             throw new InvalidIdentifierException("A resource identifier cannot be null or empty!");
 
         return patientRepository.findById(id)
+                .map(x -> this.copyEntityToDto(x, PatientDto.class))
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found!"));
+
     }
 
     @Transactional
-    public Patient create(Patient patient) {
+    public PatientDto create(PatientDto dto) {
 
         try {
-            patient = patientRepository.save(patient);
+            Patient entity = patientRepository.save(this.copyDtoToEntity(dto, Patient.class));
+            dto = this.copyEntityToDto(entity, PatientDto.class);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessRuleException(e.getMessage());
         }
+        return dto;
 
-        return patient;
     }
 
     @Transactional
-    public PatientDto update(Long id, PatientDto patientDto) {
+    public PatientDto update(Long id, PatientDto dto) {
+
         try {
-            Patient patientDb = findById(id);
-            patientDb = this.copyDtoToEntity(patientDto, patientDb);
-            patientDto = this.copyEntityToDto(patientRepository.save(patientDb), patientDto);
+            this.findById(id);
+            Patient entity = this.copyDtoToEntity(dto, Patient.class);
+            entity.setId(id);
+            entity = patientRepository.saveAndFlush(entity);
+            dto = this.copyEntityToDto(entity, PatientDto.class);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessRuleException(e.getMessage());
         }
-        return patientDto;
+        return dto;
+
     }
 
     @Transactional
     public void delete(Long id) {
-        this.findById(id);
+
         try {
+            this.findById(id);
             patientRepository.deleteById(id);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessRuleException(e.getMessage());
         }
+
     }
 
     @Override
-    protected final Patient copyDtoToEntity(PatientDto dto, Patient entity) {
-        entity.setUsername(dto.getUsername());
-        entity.setPassword(dto.getPassword());
-        entity.setOnlineStatus(dto.isOnlineStatus());
-        entity.setTotalAppointment(dto.getTotalAppointment());
-        return entity;
+    public final Patient copyDtoToEntity(PatientDto dto, Class<Patient> entity) {
+        return mapper.map(dto, entity);
     }
 
     @Override
-    protected final PatientDto copyEntityToDto(Patient entity, PatientDto dto) {
-        dto.setId(entity.getId());
-        dto.setUsername(entity.getUsername());
-        dto.setPassword(entity.getPassword());
-        dto.setOnlineStatus(entity.isOnlineStatus());
-        dto.setTotalAppointment(entity.getTotalAppointment());
-        dto.setCreatedAt(entity.getCreatedAt());
-        dto.setLastModifiedAt(entity.getLastModifiedAt());
-        return dto;
+    public final PatientDto copyEntityToDto(Patient entity, Class<PatientDto> dto) {
+        return mapper.map(entity, dto);
     }
+
 }

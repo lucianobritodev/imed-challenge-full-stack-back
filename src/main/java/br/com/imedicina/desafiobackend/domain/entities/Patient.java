@@ -2,18 +2,18 @@ package br.com.imedicina.desafiobackend.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@DynamicUpdate
-@SequenceGenerator(name = "seq_patient", initialValue = 1, allocationSize = 0)
-public class Patient extends BaseEntity {
+@SequenceGenerator(name = "seq_patient", allocationSize = 0)
+public class Patient extends Metadata implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_patient")
