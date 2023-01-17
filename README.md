@@ -20,6 +20,8 @@ Host: http://localhost:8080 <br>
 Swagger: http://localhost:8080/swagger-ui/index.html <br>
 Link Collection Postman: https://elements.getpostman.com/redirect?entityId=11164101-b7e4d7a9-e07d-4871-837e-1fe1bd61557b&entityType=collection <br>
 
+`OBS.:` Foi utilizado Postgres na aplicação, caso queira subir usando H2 precisa mudar a configuração do datasource.
+
 ## Contribuidor / Candidato Avaliado
 
 [Luciano Brito](https://github.com/lucianobritodev)
