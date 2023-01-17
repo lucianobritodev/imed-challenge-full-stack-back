@@ -38,8 +38,8 @@ public class PatientService implements ICrudService<PatientDto>, IConverterServi
     @Transactional(readOnly = true)
     public PatientDto findById(Long id) {
 
-        if(id == null)
-            throw new InvalidIdentifierException("A resource identifier cannot be null or empty!");
+        if (id == null || id <= 0)
+            throw new InvalidIdentifierException("A resource identifier cannot be null, zero or less than zero!");
 
         return patientRepository.findById(id)
                 .map(x -> this.copyEntityToDto(x, PatientDto.class))

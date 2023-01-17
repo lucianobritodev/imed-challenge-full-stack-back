@@ -38,8 +38,8 @@ public class HealthcareProfessionalService implements ICrudService<HealthcarePro
     @Transactional(readOnly = true)
     public HealthcareProfessionalDto findById(Long id) {
 
-        if(id == null)
-            throw new InvalidIdentifierException("A resource identifier cannot be null or empty!");
+        if (id == null || id <= 0)
+            throw new InvalidIdentifierException("A resource identifier cannot be null, zero or less than zero!");
 
         return healthcareProfessionalRepository.findById(id)
                 .map(x -> this.copyEntityToDto(x, HealthcareProfessionalDto.class))

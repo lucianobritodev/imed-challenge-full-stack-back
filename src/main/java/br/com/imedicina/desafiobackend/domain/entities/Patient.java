@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Table(indexes = @Index(name = "idx_patient_username", unique = false, columnList = "username"))
 @SequenceGenerator(name = "seq_patient", allocationSize = 0)
 public class Patient extends Metadata implements Serializable {
 

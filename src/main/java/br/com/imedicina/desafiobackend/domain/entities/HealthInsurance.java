@@ -10,7 +10,10 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "health_insurance")
+@Table(name = "health_insurance", indexes = {
+        @Index(name = "idx_health_insurance_name", unique = false, columnList = "name"),
+        @Index(name = "idx_health_insurance_cnpj", unique = true, columnList = "cnpj")
+})
 @SequenceGenerator(name = "seq_health_insurance", allocationSize = 0)
 public class HealthInsurance extends Metadata implements Serializable {
 

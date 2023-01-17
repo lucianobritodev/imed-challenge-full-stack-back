@@ -38,7 +38,7 @@ public class PatientDto extends MetadataDto implements  Serializable {
     private Integer totalAppointment;
 
     @NotNull(message = "Online status cannot be null.")
-    @JsonProperty(value = "online_status")
+    @JsonProperty(value = "online_status", defaultValue = "false")
     private boolean onlineStatus;
 
 }
