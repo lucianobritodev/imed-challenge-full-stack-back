@@ -16,9 +16,9 @@ Projeto desenvolvido para avaliar a proficiência nas tecnologias:
 	- JUnit
 
 
-Host: http://localhost:8080
-Swagger: http://localhost:8080/swagger-ui/index.html
-Link Collection Postman: https://elements.getpostman.com/redirect?entityId=11164101-b7e4d7a9-e07d-4871-837e-1fe1bd61557b&entityType=collection
+Host: http://localhost:8080 <br>
+Swagger: http://localhost:8080/swagger-ui/index.html <br>
+Link Collection Postman: https://elements.getpostman.com/redirect?entityId=11164101-b7e4d7a9-e07d-4871-837e-1fe1bd61557b&entityType=collection <br>
 
 ## Contribuidor / Candidato Avaliado
 
