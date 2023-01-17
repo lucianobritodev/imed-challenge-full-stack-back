@@ -3,7 +3,7 @@
 
 ## Descrição
 
-Projeto desenvolvido para avaliar a profissiencia nas tecnologias:
+Projeto desenvolvido para avaliar a proficiência nas tecnologias:
 
 	- Java
 	- SpringBoot
